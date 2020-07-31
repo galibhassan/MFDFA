@@ -21,7 +21,7 @@ t_final = 100
 delta_t = 0.001
 """
 t_final = 10
-delta_t = 0.001
+delta_t = 0.01
 
 
 # The parameters θ and σ

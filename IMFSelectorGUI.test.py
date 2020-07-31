@@ -1,5 +1,5 @@
 import numpy as np
-from IMFSelectorGUI import emdDetrender
+from EMD.src.IMFSelectorGUI import emdDetrender
 from matplotlib import pyplot as plt
 
 def main():
