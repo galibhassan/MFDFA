@@ -16,8 +16,13 @@ from MFDFA import fgn
 # Generate some path with a simple Euler–Maruyama integrator
 
 # Integration time and time sampling
+""" 
 t_final = 100
 delta_t = 0.001
+"""
+t_final = 10
+delta_t = 0.001
+
 
 # The parameters θ and σ
 theta = 1

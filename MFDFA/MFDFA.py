@@ -7,9 +7,10 @@
 
 import numpy as np
 from numpy.polynomial.polynomial import polyfit, polyval
+from EMD.src.IMFSelectorGUI import emdDetrender
 
 def MFDFA(timeseries: np.ndarray, lag: np.ndarray=None, order: int=1,
-          q: np.ndarray=2, modified: bool=False) -> np.ndarray:
+          q: np.ndarray=2, modified: bool=False, detrendByEMD=True) -> np.ndarray:
     """
     Multi-Fractal Detrended Fluctuation Analysis of timeseries. MFDFA generates
     a fluctuation function F²(q,s), with s the segment size and q the q-powers,
@@ -122,22 +123,35 @@ def MFDFA(timeseries: np.ndarray, lag: np.ndarray=None, order: int=1,
     # The same procedure it run in reverse, were elements at the begining of the
     # series are discared instead
     for i in lag:
-        # Reshape into (N/lag, lag)
-        Y_ = Y[:N - N % i].reshape((N - N % i) // i, i)
-        Y_r = Y[N % i:].reshape((N - N % i) // i, i)
+        if detrendByEMD==False: 
+            # Reshape into (N/lag, lag)
+            Y_ = Y[:N - N % i].reshape((N - N % i) // i, i)
+            Y_r = Y[N % i:].reshape((N - N % i) // i, i)
 
-        if order == 0:
-            # Skip detrending
+            if order == 0:
+                # Skip detrending
+                F = np.var(Y_, axis=1)
+                F_r =  np.var(Y_r, axis=1)
+            else:
+                # Perform a polynomial fit to each segments
+                p = polyfit(X[:i], Y_.T, order)
+                p_r = polyfit(X[:i], Y_r.T, order)
+
+                # Subtract the trend from the fit and calculate the variance
+                F = np.var(Y_ - polyval(X[:i], p), axis = 1)
+                F_r = np.var(Y_r - polyval(X[:i], p_r), axis = 1)
+        
+        else:
+            # detrend using EMD
+            Y_detrended = emdDetrender(Y)
+            
+            # Reshape into (N/lag, lag)
+            Y_ = Y_detrended[:N - N % i].reshape((N - N % i) // i, i)
+            Y_r = Y_detrended[N % i:].reshape((N - N % i) // i, i)
+
+            # calculate the variance
             F = np.var(Y_, axis=1)
             F_r =  np.var(Y_r, axis=1)
-        else:
-            # Perform a polynomial fit to each segments
-            p = polyfit(X[:i], Y_.T, order)
-            p_r = polyfit(X[:i], Y_r.T, order)
-
-            # Subtract the trend from the fit and calculate the variance
-            F = np.var(Y_ - polyval(X[:i], p), axis = 1)
-            F_r = np.var(Y_r - polyval(X[:i], p_r), axis = 1)
 
         # Caculate the Multi-Fractal Nondetrended or Detrended Fluctuation Analysis
         f = np.append(f,
