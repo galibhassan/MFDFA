@@ -54,23 +54,17 @@ def emdDetrender(timeSeries):
 
     # initiate checkBoxes
     imfCheckboxContainer = Frame(sideBar, xPosition=100, yPosition=100, width=100, height=windowHeight-200, )
-    imfCheckButtons = CheckButtons(len(IMFs), imfCheckboxContainer.core)
+    imfCheckButtons = CheckButtons(len(IMFs), root)
 
 
-    # initiate button for detrending
-    def buttonClickHandlerCB(args):
-        # args is instance of CheckButtons class
-        vals = args.getCheckButtonValues()
-        GLOBAL_DICT["checkButtonsState"] = vals
-        root.destroy()
-
+   
     buttonText = "Subtract selected IMFs"
     button = Button(
         root, 
         windowHeight,
         clickHandler={
             "callback": buttonClickHandlerCB,
-            "args": imfCheckButtons
+            "args": [root, imfCheckButtons, GLOBAL_DICT]
         }, 
         xPosition=10, 
         yPosition=windowHeight-45,  
@@ -78,6 +72,7 @@ def emdDetrender(timeSeries):
     )
 
     appHeading = tk.Label(
+        root,
         text= 'IMF Subtractor',
         font=("", 14),
         background='#4D4F68',
@@ -92,6 +87,14 @@ def emdDetrender(timeSeries):
 
     detrendedTimeSeries = getDetrentedTimeSeries(timeSeries, IMFs, GLOBAL_DICT["checkButtonsState"])
     return detrendedTimeSeries
+
+# initiate button for detrending
+def buttonClickHandlerCB(args):
+    # args is an array of the form [root, imfCheckButtons, GLOBAL_DICT]
+    vals = args[1].getCheckButtonValues()
+    args[2]["checkButtonsState"] = vals
+    args[0].destroy()
+
 
 def getDetrentedTimeSeries(timeseries, IMFs, checkButtonsState):
     tobeSubtracted = timeseries*0

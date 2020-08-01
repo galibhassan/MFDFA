@@ -12,6 +12,7 @@ class Button:
         self.text = text
         self.backgroundColor = backgroundColor
         self.core = tk.Label(
+            self.root,
             background=self.backgroundColor,
             foreground=foreground,
             text=self.text,
