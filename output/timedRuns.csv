@@ -1,11 +1,61 @@
-function_name, options, timeseries_shape, execution_time
-MFDFA, {'eDFA': True}, (32;), 0.0020303726196289062
-MFDFA, {'eDFA': True}, (64;), 0.0
-MFDFA, {'eDFA': True}, (128;), 0.00919795036315918
-MFDFA, {'eDFA': True}, (256;), 0.016918659210205078
-MFDFA, {'eDFA': True}, (512;), 0.0271761417388916
-MFDFA, {'eDFA': False}, (32;), 0.000995635986328125
-MFDFA, {'eDFA': False}, (64;), 0.011490583419799805
-MFDFA, {'eDFA': False}, (128;), 0.013833999633789062
-MFDFA, {'eDFA': False}, (256;), 0.019494056701660156
-MFDFA, {'eDFA': False}, (512;), 0.01823258399963379
+function_name, hurstCoeff, options, timeseries_size, execution_time
+MFDFA, 0.25, {'eDFA': True}; stat:True, (32;), 0.0009891986846923828
+MFDFA, 0.25, {'eDFA': True}; stat:True, (64;), 0.0030241012573242188
+MFDFA, 0.25, {'eDFA': True}; stat:True, (128;), 0.003986358642578125
+MFDFA, 0.25, {'eDFA': True}; stat:True, (256;), 0.008006811141967773
+MFDFA, 0.25, {'eDFA': True}; stat:True, (512;), 0.007977962493896484
+MFDFA, 0.25, {'eDFA': False}; stat:True, (32;), 0.0010280609130859375
+MFDFA, 0.25, {'eDFA': False}; stat:True, (64;), 0.0019948482513427734
+MFDFA, 0.25, {'eDFA': False}; stat:True, (128;), 0.003981351852416992
+MFDFA, 0.25, {'eDFA': False}; stat:True, (256;), 0.006018161773681641
+MFDFA, 0.25, {'eDFA': False}; stat:True, (512;), 0.007939815521240234
+MFDFA, 0.25, {'eDFA': True}; stat:False, (32;), 0.001028299331665039
+MFDFA, 0.25, {'eDFA': True}; stat:False, (64;), 0.002022981643676758
+MFDFA, 0.25, {'eDFA': True}; stat:False, (128;), 0.0039899349212646484
+MFDFA, 0.25, {'eDFA': True}; stat:False, (256;), 0.005983591079711914
+MFDFA, 0.25, {'eDFA': True}; stat:False, (512;), 0.006978750228881836
+MFDFA, 0.25, {'eDFA': False}; stat:False, (32;), 0.0009586811065673828
+MFDFA, 0.25, {'eDFA': False}; stat:False, (64;), 0.001959562301635742
+MFDFA, 0.25, {'eDFA': False}; stat:False, (128;), 0.004021167755126953
+MFDFA, 0.25, {'eDFA': False}; stat:False, (256;), 0.005977630615234375
+MFDFA, 0.25, {'eDFA': False}; stat:False, (512;), 0.010005712509155273
+MFDFA, 0.5, {'eDFA': True}; stat:True, (32;), 0.0009999275207519531
+MFDFA, 0.5, {'eDFA': True}; stat:True, (64;), 0.0019936561584472656
+MFDFA, 0.5, {'eDFA': True}; stat:True, (128;), 0.0049898624420166016
+MFDFA, 0.5, {'eDFA': True}; stat:True, (256;), 0.006984710693359375
+MFDFA, 0.5, {'eDFA': True}; stat:True, (512;), 0.009981632232666016
+MFDFA, 0.5, {'eDFA': False}; stat:True, (32;), 0.0009982585906982422
+MFDFA, 0.5, {'eDFA': False}; stat:True, (64;), 0.001996278762817383
+MFDFA, 0.5, {'eDFA': False}; stat:True, (128;), 0.0039942264556884766
+MFDFA, 0.5, {'eDFA': False}; stat:True, (256;), 0.005951404571533203
+MFDFA, 0.5, {'eDFA': False}; stat:True, (512;), 0.007979154586791992
+MFDFA, 0.5, {'eDFA': True}; stat:False, (32;), 0.0010192394256591797
+MFDFA, 0.5, {'eDFA': True}; stat:False, (64;), 0.002028942108154297
+MFDFA, 0.5, {'eDFA': True}; stat:False, (128;), 0.00399470329284668
+MFDFA, 0.5, {'eDFA': True}; stat:False, (256;), 0.005982398986816406
+MFDFA, 0.5, {'eDFA': True}; stat:False, (512;), 0.006983280181884766
+MFDFA, 0.5, {'eDFA': False}; stat:False, (32;), 0.001024484634399414
+MFDFA, 0.5, {'eDFA': False}; stat:False, (64;), 0.0029833316802978516
+MFDFA, 0.5, {'eDFA': False}; stat:False, (128;), 0.002991199493408203
+MFDFA, 0.5, {'eDFA': False}; stat:False, (256;), 0.004983663558959961
+MFDFA, 0.5, {'eDFA': False}; stat:False, (512;), 0.00698089599609375
+MFDFA, 0.8, {'eDFA': True}; stat:True, (32;), 0.0020301342010498047
+MFDFA, 0.8, {'eDFA': True}; stat:True, (64;), 0.0029561519622802734
+MFDFA, 0.8, {'eDFA': True}; stat:True, (128;), 0.004014015197753906
+MFDFA, 0.8, {'eDFA': True}; stat:True, (256;), 0.005983591079711914
+MFDFA, 0.8, {'eDFA': True}; stat:True, (512;), 0.008944034576416016
+MFDFA, 0.8, {'eDFA': False}; stat:True, (32;), 0.0019936561584472656
+MFDFA, 0.8, {'eDFA': False}; stat:True, (64;), 0.0019943714141845703
+MFDFA, 0.8, {'eDFA': False}; stat:True, (128;), 0.0040166378021240234
+MFDFA, 0.8, {'eDFA': False}; stat:True, (256;), 0.005948305130004883
+MFDFA, 0.8, {'eDFA': False}; stat:True, (512;), 0.007976531982421875
+MFDFA, 0.8, {'eDFA': True}; stat:False, (32;), 0.0009975433349609375
+MFDFA, 0.8, {'eDFA': True}; stat:False, (64;), 0.001994609832763672
+MFDFA, 0.8, {'eDFA': True}; stat:False, (128;), 0.003989696502685547
+MFDFA, 0.8, {'eDFA': True}; stat:False, (256;), 0.005982875823974609
+MFDFA, 0.8, {'eDFA': True}; stat:False, (512;), 0.008932828903198242
+MFDFA, 0.8, {'eDFA': False}; stat:False, (32;), 0.0009975433349609375
+MFDFA, 0.8, {'eDFA': False}; stat:False, (64;), 0.0020248889923095703
+MFDFA, 0.8, {'eDFA': False}; stat:False, (128;), 0.003985881805419922
+MFDFA, 0.8, {'eDFA': False}; stat:False, (256;), 0.005974531173706055
+MFDFA, 0.8, {'eDFA': False}; stat:False, (512;), 0.007013559341430664

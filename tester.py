@@ -1,10 +1,12 @@
 # %% codecell
+import os.path
 import numpy as np
 from numpy.polynomial.polynomial import polyfit
 import matplotlib.pyplot as plt
-from tester_timed import timedRun, saveTimeStatInCSV
+from tester_timed import timedRun, saveTimeStatInCSV, saveOutput
 
 import MFDFA as MFDFA
+
 
 # %% Lets take a fractional Ornstein–Uhlenbeck process Xₜ with a time-dependent
 # diffusion or volatility σₜ, some drift of mean reverting term θ(Xₜ), and
@@ -18,82 +20,96 @@ import MFDFA as MFDFA
 
 t_finals = []
 
-# don't go more than 23
+# don't go more than 2^23
 for i in range(5, 10):
     t_finals.append(pow(2,i))
 
 edfaOptions = [True, False]
+statOptions = [True, False]
+hurstCoeffs = [.25, .5, .8]
 print(t_finals)
 
-for edfaOption in edfaOptions:
+for hurstCoeff in hurstCoeffs:
+    for statOption in statOptions:
+        for edfaOption in edfaOptions:
+            for t_final in t_finals:
 
-    for t_final in t_finals:
+                # t_final = 100000
+                delta_t = 1
 
-        # t_final = 100000
-        delta_t = 1
+                # The parameters θ and σ
+                theta = 1
+                sigma = 0.5
 
-        # The parameters θ and σ
-        theta = 1
-        sigma = 0.5
+                # The time array of the trajectory
+                time = np.arange(0, t_final, delta_t)
 
-        # The time array of the trajectory
-        time = np.arange(0, t_final, delta_t)
+                # Initialise the array y
+                X = np.zeros(time.size)
 
-        # Initialise the array y
-        X = np.zeros(time.size)
+                # Lets use a positively correlated noise H > 1/2
+                H = hurstCoeff
 
-        # Lets use a positively correlated noise H > 1/2
-        H = 0.5
+                # Generate the fractional Gaussian noise
+                dw = (t_final ** H) * MFDFA.fgn(time.size, H = H)
 
-        # Generate the fractional Gaussian noise
-        dw = (t_final ** H) * MFDFA.fgn(time.size, H = H)
+                # Integrate the process
+                for i in range(1,time.size):
+                    X[i] = X[i-1] - theta*X[i-1]*delta_t + sigma*dw[i]
 
-        # Integrate the process
-        for i in range(1,time.size):
-            X[i] = X[i-1] - theta*X[i-1]*delta_t + sigma*dw[i]
-
-        # Plot the path
-        """ plt.plot(time, X) """
-
-
-        # %% MFDFA
-        # Select the segment lengths s, denoted lag here
-        lag = np.unique(np.logspace(0, np.log10(X.size // 10), 25).astype(int)+1)
-
-        # q-variations to calculate
-        q = 2
-
-        # dfa records the fluctuation function using the EMD as a detrending mechanims.
-        # lag, dfa, dfa_std, e_dfa = MFDFA.MFDFA(X, lag, q = q, order = 1, stat = True, extensions = {"eDFA": True})
+                # Plot the path
+                """ plt.plot(time, X) """
 
 
-        # lag, dfa, dfa_std, e_dfa = MFDFA.MFDFA()
-        order = 1
-        stat = True
-        modified = False,
-        extensions = {"eDFA": edfaOption}
-        mfdfaTimed = timedRun(MFDFA.MFDFA, [X, lag, order, q, stat, modified, extensions])
-        # lag, dfa, dfa_std, e_dfa = mfdfaTimed["output"]
+                # %% MFDFA
+                # Select the segment lengths s, denoted lag here
+                lag = np.unique(np.logspace(0, np.log10(X.size // 10), 25).astype(int)+1)
 
-        saveTimeStatInCSV(
-            './output/timedRuns.csv',
-            mfdfaTimed["functionName"],
-            extensions,
-            X.shape,
-            mfdfaTimed["executionTime"]
-        )
+                # q-variations to calculate
+                q = 2
+
+                # dfa records the fluctuation function using the EMD as a detrending mechanims.
+                # lag, dfa, dfa_std, e_dfa = MFDFA.MFDFA(X, lag, q = q, order = 1, stat = True, extensions = {"eDFA": True})
 
 
+                # lag, dfa, dfa_std, e_dfa = MFDFA.MFDFA()
+                order = 1
+                stat = statOption
+                modified = False,
+                extensions = {"eDFA": edfaOption}
+                mfdfaTimed = timedRun(MFDFA.MFDFA, [X, lag, order, q, stat, modified, extensions])
+                # lag, dfa, dfa_std, e_dfa = mfdfaTimed["output"]
 
-        # %% Plots
-        # Visualise the results in a log-log plot
-        """ plt.loglog(lag, dfa, '-');
-        plt.loglog(lag, dfa + dfa_std, '--');
-        plt.loglog(lag, e_dfa, 'o-');
-        """
-        # plt.show()
-        # %%
-        # Extract the slopes and compare with H + 1, i.e., 1.7.
-        """ polyfit(np.log(lag)[:10],np.log(dfa)[:10],1)[1]
-        polyfit(np.log(lag)[:10],np.log(e_dfa)[:10],1)[1]
-        """
+                
+
+                saveTimeStatInCSV(
+                    './output/timedRuns.csv',
+                    mfdfaTimed["functionName"],
+                    hurstCoeff,
+                    statOption,
+                    extensions,
+                    X.shape,
+                    mfdfaTimed["executionTime"]
+                )
+
+                saveOutput(
+                    mfdfaTimed["functionName"],
+                    hurstCoeff,
+                    statOption,
+                    extensions,
+                    X,
+                    mfdfaTimed["output"]
+                )
+
+                # %% Plots
+                # Visualise the results in a log-log plot
+                """ plt.loglog(lag, dfa, '-');
+                plt.loglog(lag, dfa + dfa_std, '--');
+                plt.loglog(lag, e_dfa, 'o-');
+                """
+                # plt.show()
+                # %%
+                # Extract the slopes and compare with H + 1, i.e., 1.7.
+                """ polyfit(np.log(lag)[:10],np.log(dfa)[:10],1)[1]
+                polyfit(np.log(lag)[:10],np.log(e_dfa)[:10],1)[1]
+                """
