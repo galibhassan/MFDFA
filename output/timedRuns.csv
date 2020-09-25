@@ -1,0 +1,11 @@
+function_name, options, timeseries_shape, execution_time
+MFDFA, {'eDFA': True}, (32;), 0.0020303726196289062
+MFDFA, {'eDFA': True}, (64;), 0.0
+MFDFA, {'eDFA': True}, (128;), 0.00919795036315918
+MFDFA, {'eDFA': True}, (256;), 0.016918659210205078
+MFDFA, {'eDFA': True}, (512;), 0.0271761417388916
+MFDFA, {'eDFA': False}, (32;), 0.000995635986328125
+MFDFA, {'eDFA': False}, (64;), 0.011490583419799805
+MFDFA, {'eDFA': False}, (128;), 0.013833999633789062
+MFDFA, {'eDFA': False}, (256;), 0.019494056701660156
+MFDFA, {'eDFA': False}, (512;), 0.01823258399963379
